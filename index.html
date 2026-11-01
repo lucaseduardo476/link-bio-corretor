@@ -46,9 +46,9 @@ const CONFIG = {
   },
 
   corretor: {
-    nome:  "[Nome do Corretor]",
-    foto:  "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=320&h=320&q=60&auto=format&fit=crop&crop=faces",
-    cargo: "Corretor de imóveis",
+    nome:  "[Nome da Corretora]",
+    foto:  "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=320&h=320&q=60&auto=format&fit=crop&crop=faces",
+    cargo: "Corretora de imóveis",
     creci: "[123456-F/SP]",
     frase: "Encontro o imóvel *certo* para você em [sua cidade], com segurança do primeiro contato à entrega das chaves.",
     cidade: "[São Paulo/SP]"
@@ -132,8 +132,10 @@ const CONFIG = {
 
   sobre: {
     rotulo: "Sobre mim",
-    titulo: "Quem vai cuidar do seu *negócio*",
-    texto: "Sou [Nome], corretor há [12] anos em [sua cidade]. Acompanho cada etapa pessoalmente: visita, negociação, documentação e financiamento.",
+    titulo: "Quem vai te acompanhar no processo de *compra*",   // a palavra entre *asteriscos* fica na cor de destaque
+    // Foto do card "Sobre": retrato vertical (ex.: 600x750), de preferência num ambiente de trabalho
+    foto: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=480&h=600&q=60&auto=format&fit=crop&crop=faces",
+    texto: "Sou [Nome], corretora há [12] anos em [sua cidade]. Acompanho cada etapa pessoalmente: visita, negociação, documentação e financiamento.",
     numeros: [
       { valor: 12,   prefixo: "",  sufixo: "",  rotulo: "anos de mercado" },
       { valor: 300,  prefixo: "+", sufixo: "",  rotulo: "imóveis vendidos" },
@@ -374,8 +376,24 @@ const CONFIG = {
   .material p, .sobre p { margin: 10px 0 18px; color: var(--texto-suave); font-size: 15.5px; }
 
   /* ---------- 4. Sobre ---------- */
-  .sobre { padding: 22px 20px; }
-  .sobre p { margin-bottom: 20px; }
+  .sobre { padding: 14px 14px 20px; }
+  .sobre-topo { display: grid; grid-template-columns: 42% 1fr; gap: 16px; align-items: center; }
+  .sobre-topo.sem-foto { grid-template-columns: 1fr; padding: 8px 6px 0; }
+  .sobre-foto { aspect-ratio: 4 / 5; max-width: 100%; border-radius: 14px; overflow: hidden; background: var(--borda); }
+  .sobre-foto img { width: 100%; height: 100%; object-fit: cover; }
+  .sobre-info { min-width: 0; padding-right: 4px; }
+  .sobre .sobre-info h3 {
+    font: 600 clamp(24px, 6.6vw, 30px)/1.05 var(--fonte-titulos);
+    letter-spacing: .005em; text-wrap: balance;
+  }
+  .sobre-info h3 mark { background: none; color: var(--destaque); padding: 0; }
+  .sobre .sobre-nome {
+    margin: 12px 0 8px; color: var(--texto-suave);
+    font-size: 11.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  }
+  .sobre-creci { display: inline-flex; align-items: center; gap: 5px; color: var(--destaque); font-size: 12.5px; font-weight: 700; }
+  .sobre-creci svg { width: 14px; height: 14px; }
+  .sobre > p { margin: 18px 6px 20px; }
   .numeros { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .numero { padding: 14px 8px; text-align: center; border-radius: 14px; border: 1px solid var(--borda); background: color-mix(in srgb, var(--texto) 3%, transparent); }
   .numero strong { display: block; font: 700 32px/1 var(--fonte-titulos); color: var(--destaque); font-variant-numeric: tabular-nums; }
@@ -663,7 +681,14 @@ const CONFIG = {
   const S = C.sobre;
   $("rot-sobre").textContent = S.rotulo;
   $("sobre").innerHTML = `
-    <h3>${fmt(S.titulo)}</h3>
+    <div class="sobre-topo${S.foto ? "" : " sem-foto"}">
+      ${S.foto ? `<div class="sobre-foto"><img src="${esc(S.foto)}" alt="Foto de ${esc(k.nome)}" width="480" height="600" loading="lazy" decoding="async"></div>` : ""}
+      <div class="sobre-info">
+        <h3>${fmt(S.titulo)}</h3>
+        <p class="sobre-nome">${esc(k.nome)}</p>
+        <span class="sobre-creci">${ic("escudo")}CRECI ${esc(k.creci)}</span>
+      </div>
+    </div>
     <p>${fmt(S.texto)}</p>
     <div class="numeros">${S.numeros.map((n) => `
       <div class="numero"><strong data-valor="${+n.valor}" data-pre="${esc(n.prefixo)}" data-suf="${esc(n.sufixo)}">${esc(n.prefixo)}${(+n.valor).toLocaleString("pt-BR")}${esc(n.sufixo)}</strong><span>${esc(n.rotulo)}</span></div>`).join("")}

@@ -12,7 +12,8 @@
    (papel A4, margens "Padrão", marque "Gráficos de plano de fundo").
    ===================================================================== */
 const CHECKLIST = {
-  nome: "[Nome do Corretor]",
+  nome: "[Nome da Corretora]",
+  cargo: "Corretora de imóveis",
   creci: "[123456-F/SP]",
   whatsapp: "[(11) 90000-0000]",
   instagram: "[@seuusuario]",
@@ -142,7 +143,7 @@ const CHECKLIST = {
   </div>
 
   <footer>
-    <div><strong id="c-nome"></strong> · Corretor de imóveis · <span class="creci" id="c-creci"></span></div>
+    <div><strong id="c-nome"></strong> · <span id="c-cargo"></span> · <span class="creci" id="c-creci"></span></div>
     <div id="c-contato"></div>
   </footer>
 </div>
@@ -151,6 +152,7 @@ const CHECKLIST = {
   root.setProperty("--destaque", K.corDestaque);
   root.setProperty("--texto", K.corTexto);
   document.getElementById("c-nome").textContent = K.nome;
+  document.getElementById("c-cargo").textContent = K.cargo;
   document.getElementById("c-creci").textContent = "CRECI " + K.creci;
   document.getElementById("c-contato").textContent = ["WhatsApp " + K.whatsapp, K.instagram].filter(Boolean).join(" · ");
 </script>
