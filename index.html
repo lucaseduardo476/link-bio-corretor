@@ -127,7 +127,11 @@ const CONFIG = {
     rotulo: "Material gratuito",
     titulo: "Checklist gratuito: o que observar na *visita* a um imóvel",
     texto: "Os pontos que quase ninguém confere e que evitam dor de cabeça depois da compra. Te envio pelo WhatsApp.",
-    botao: "Quero receber o checklist"
+    botao: "Quero receber o checklist",
+    selo: "PDF · 1 página",
+    // Miniatura do checklist mostrada no card ("" = mostra só um ícone).
+    // Se mudar o checklist, gere uma nova imagem da página (ex.: print reduzido para 300px de largura).
+    miniatura: "checklist-miniatura.jpg"
   },
 
   sobre: {
@@ -365,8 +369,44 @@ const CONFIG = {
   .contador { flex: none; font-size: 13px; font-weight: 500; }
 
   /* ---------- 3. Material gratuito ---------- */
-  .material { padding: 22px 20px 20px; }
-  .material-cab { display: flex; gap: 14px; align-items: flex-start; }
+  .material {
+    position: relative; overflow: hidden; padding: 20px 18px 18px;
+    background:
+      radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--destaque) 20%, transparent), transparent 60%),
+      var(--superficie);
+    border-color: color-mix(in srgb, var(--destaque) 35%, var(--borda));
+  }
+  .material-cab { display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; }
+  .material-cab > div { min-width: 0; }
+  .material .selo {
+    display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px;
+    padding: 4px 10px; border-radius: 999px;
+    background: var(--destaque); color: var(--texto-destaque);
+    font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+  }
+  .material .selo svg { width: 13px; height: 13px; }
+  .material .material-cab h3 { font-size: 18px; line-height: 1.3; text-wrap: balance; }
+  .material h3 mark { background: none; color: var(--destaque); padding: 0; }
+
+  /* Miniatura da folha do checklist, levemente inclinada sobre uma segunda folha */
+  .miniatura { position: relative; width: 104px; margin: 4px 6px 8px 0; rotate: 4deg; }
+  .miniatura::before {
+    content: ""; position: absolute; inset: 0;
+    background: color-mix(in srgb, #fff 82%, var(--destaque));
+    border-radius: 4px; rotate: -8deg; translate: -6px 4px; opacity: .55;
+  }
+  .miniatura img {
+    position: relative; width: 100%; height: auto; aspect-ratio: 300 / 424;
+    border-radius: 4px; background: #fff;
+    box-shadow: 0 14px 28px -10px rgba(0,0,0,.7), 0 0 0 1px rgba(0,0,0,.08);
+  }
+  .btn-material {
+    background: color-mix(in srgb, var(--destaque) 16%, transparent);
+    border: 1px solid color-mix(in srgb, var(--destaque) 55%, transparent);
+    color: var(--texto);
+  }
+  .btn-material:hover { background: color-mix(in srgb, var(--destaque) 24%, transparent); }
+  .btn-material .i-wpp { color: var(--whatsapp); }
   .icone-box {
     flex: none; width: 52px; height: 52px; display: grid; place-items: center;
     border-radius: 14px; background: color-mix(in srgb, var(--destaque) 14%, transparent);
@@ -670,12 +710,16 @@ const CONFIG = {
   $("rot-material").textContent = M.rotulo;
   $("material").innerHTML = `
     <div class="material-cab">
-      <div class="icone-box">${ic("checklist")}</div>
-      <div><h3>${fmt(M.titulo)}</h3></div>
+      <div>
+        ${M.selo ? `<span class="selo">${ic("checklist")}${esc(M.selo)}</span>` : ""}
+        <h3>${fmt(M.titulo)}</h3>
+      </div>
+      ${M.miniatura
+        ? `<div class="miniatura"><img src="${esc(M.miniatura)}" alt="Prévia do checklist" width="300" height="424" loading="lazy" decoding="async"></div>`
+        : `<div class="icone-box">${ic("checklist")}</div>`}
     </div>
     <p>${fmt(M.texto)}</p>
-    <a class="btn btn-contorno" href="${wa(C.whatsapp.mensagemChecklist)}" target="_blank" rel="noopener">${ic("wpp", "i-wpp")}${esc(M.botao)}</a>`;
-  document.querySelector("#material .i-wpp").style.color = "var(--whatsapp)";
+    <a class="btn btn-material" href="${wa(C.whatsapp.mensagemChecklist)}" target="_blank" rel="noopener">${ic("wpp", "i-wpp")}${esc(M.botao)}</a>`;
 
   /* ---------- 4. Sobre ---------- */
   const S = C.sobre;
