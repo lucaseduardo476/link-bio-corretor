@@ -34,7 +34,8 @@ const CONFIG = {
       textoSuave:    "#a7a196",  // textos secundários
       destaque:      "#d6b062",  // cor da marca (botões, CRECI, detalhes)
       textoDestaque: "#16120a",  // texto sobre a cor de destaque
-      whatsapp:      "#25d366"   // cor dos ícones de WhatsApp
+      whatsapp:      "#25d366",  // verde do WhatsApp (botão do topo e ícones)
+      textoWhatsapp: "#06301a"   // texto sobre o verde do WhatsApp
     },
     fontes: {
       titulos: "'Barlow Condensed', 'Arial Narrow', sans-serif",
@@ -286,13 +287,17 @@ const CONFIG = {
   /* ---------- 2. Oportunidades ---------- */
   .wpp-topo {
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    min-height: 48px; margin: 0 0 16px; padding: 10px 16px;
-    border-radius: 999px; border: 1px solid var(--borda);
-    color: var(--texto-suave); font-size: 15px; font-weight: 500; text-decoration: none;
-    transition: color .15s, border-color .15s;
+    min-height: 52px; margin: 0 0 16px; padding: 12px 18px;
+    border-radius: 999px; border: 0;
+    background: var(--whatsapp); color: var(--texto-whatsapp);
+    font-size: 15.5px; font-weight: 700; text-decoration: none;
+    box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--whatsapp) 80%, transparent);
+    transition: filter .15s, transform .15s;
+    -webkit-tap-highlight-color: transparent;
   }
-  .wpp-topo:hover { color: var(--texto); border-color: color-mix(in srgb, var(--whatsapp) 50%, var(--borda)); }
-  .wpp-topo .i-wpp { color: var(--whatsapp); }
+  .wpp-topo:hover { filter: brightness(1.06); }
+  .wpp-topo:active { transform: scale(.98); }
+  .wpp-topo .i-wpp { width: 1.3em; height: 1.3em; color: var(--texto-whatsapp); }
 
   .carrossel { position: relative; }
   .trilho {
@@ -585,7 +590,7 @@ const CONFIG = {
 
   /* ---------- tema ---------- */
   const t = C.tema, r = document.documentElement.style;
-  const mapa = { fundo: "--fundo", superficie: "--superficie", borda: "--borda", texto: "--texto", textoSuave: "--texto-suave", destaque: "--destaque", textoDestaque: "--texto-destaque", whatsapp: "--whatsapp" };
+  const mapa = { fundo: "--fundo", superficie: "--superficie", borda: "--borda", texto: "--texto", textoSuave: "--texto-suave", destaque: "--destaque", textoDestaque: "--texto-destaque", whatsapp: "--whatsapp", textoWhatsapp: "--texto-whatsapp" };
   for (const k in mapa) r.setProperty(mapa[k], t.cores[k]);
   r.setProperty("--fonte-titulos", t.fontes.titulos);
   r.setProperty("--fonte-texto", t.fontes.texto);
